@@ -11,3 +11,6 @@ Simple API for CRUD orders
 5. Swagger for documentation API
 6. Extension HttpRequest in VSCode for http request 
 7. ...
+
+## Documentation
+Read api_specs.yml for documentation
