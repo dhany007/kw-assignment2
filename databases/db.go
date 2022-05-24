@@ -1,6 +1,7 @@
 package databases
 
 import (
+	"assignment2/models"
 	"fmt"
 	"log"
 
@@ -12,9 +13,9 @@ import (
 const (
 	DB_HOST = "localhost"
 	DB_PORT = "5432"
-	DB_USER = "koinworks"
+	DB_USER = "postgres"
 	DB_PASS = ""
-	DB_NAME = "db_go_sql"
+	DB_NAME = "postgres"
 )
 
 func ConnectDB() *gorm.DB {
@@ -28,7 +29,22 @@ func ConnectDB() *gorm.DB {
 		panic(err)
 	}
 
+	err = migrate(db)
+	if err != nil {
+		panic(err)
+	}
+
 	log.Default().Println("connection db success")
 
 	return db
+}
+
+func migrate(db *gorm.DB) error {
+	if err := db.AutoMigrate(&models.Order{}); err != nil {
+		return err
+	}
+	if err := db.AutoMigrate(&models.Item{}); err != nil {
+		return err
+	}
+	return nil
 }
