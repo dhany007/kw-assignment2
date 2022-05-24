@@ -7,7 +7,7 @@ servers:
   - url: https://localhost:3000
 components:
   schemas:
-    Items: 
+    Item: 
       type: object
       properties:
         item_id:
@@ -18,7 +18,16 @@ components:
           type: string
         quantity:
           type: number
-    Order:
+    ItemWithoutID: 
+      type: object
+      properties:
+        item_code:
+          type: string
+        description:
+          type: string
+        quantity:
+          type: number
+    ResponseGetCreateOrder:
       type: object
       properties:
         order_id:
@@ -30,7 +39,18 @@ components:
         items:
           type: array
           items: 
-            $ref: '#/components/schemas/Items'
+            $ref: '#/components/schemas/Item'
+    RequestCreateOrder:
+      type: object
+      properties:
+        customer_name:
+          type: string
+        ordered_at:
+          type: string
+        items:
+          type: array
+          items: 
+            $ref: '#/components/schemas/ItemWithoutID'
     ResponseError:
       type: object
       properties:
@@ -62,20 +82,45 @@ paths:
                   payload:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Order'
+                      $ref: '#/components/schemas/ResponseGetCreateOrder'
         '400':
           description: Failed get all order with items
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseError'
-        
     post:
       tags: 
         - orders
+      description: Create new order
+      summary: Create new order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestCreateOrder'
       responses:
         '200':
-          description: OK
+          description: Success create new order
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResponseGetCreateOrder'
+        '400':
+          description: Failed create new order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
   /orders/{orderID}:
     get:
       tags: 
@@ -92,38 +137,6 @@ paths:
     delete:
       tags: 
         - orders
-      responses:
-        '200':
-          description: OK
-  /items:
-    get:
-      tags: 
-        - items
-      responses:
-        '200':
-          description: OK
-    post:
-      tags: 
-        - items
-      responses:
-        '200':
-          description: OK
-  /items/{itemID}:
-    get:
-      tags: 
-        - items
-      responses:
-        '200':
-          description: OK
-    put:
-      tags: 
-        - items
-      responses:
-        '200':
-          description: OK
-    delete:
-      tags: 
-        - items
       responses:
         '200':
           description: OK
