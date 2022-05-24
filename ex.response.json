@@ -1,0 +1,47 @@
+{
+	"success": {
+		"code": 200,
+		"status": "OK",
+		"payload": [{
+			"order_id": 1,
+			"customer_name": "andy",
+			"ordered_at": "2019-11-09T21:21:46+00:00",
+			"items": [{
+					"item_id": 1,
+					"item_code": "IT01",
+					"description": "test description",
+					"quantity": 10
+				},
+				{
+					"item_id": 2,
+					"item_code": "IT02",
+					"description": "test description",
+					"quantity": 10
+				}
+			]
+		}, {
+			"order_id": 2,
+			"customer_name": "budi",
+			"ordered_at": "2019-11-09T21:21:46+00:00",
+			"items": [{
+					"item_id": 3,
+					"item_code": "IT03",
+					"description": "test description",
+					"quantity": 10
+				},
+				{
+					"item_id": 4,
+					"item_code": "IT04",
+					"description": "test description",
+					"quantity": 10
+				}
+			]
+		}]
+	},
+	"failed": {
+		"code": 400,
+		"status": "Bad Request",
+		"error": "test error"
+	}
+
+}
