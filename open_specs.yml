@@ -32,9 +32,9 @@ components:
       properties:
         order_id:
           type: number
-        customer_name:
-          type: string
         ordered_at:
+          type: string
+        customer_name:
           type: string
         items:
           type: array
@@ -45,12 +45,19 @@ components:
       properties:
         customer_name:
           type: string
-        ordered_at:
-          type: string
         items:
           type: array
           items: 
             $ref: '#/components/schemas/ItemWithoutID'
+    RequestUpdateOrder:
+      type: object
+      properties:
+        customer_name:
+          type: string
+        items:
+          type: array
+          items: 
+            $ref: '#/components/schemas/Item'
     ResponseError:
       type: object
       properties:
@@ -125,18 +132,103 @@ paths:
     get:
       tags: 
         - orders
+      description: Get order with items by Order ID
+      summary: Get order with items by Order ID
+      parameters:
+        - required: true
+          name: orderID
+          in: path
+          description: Order ID
+          schema:
+            type: integer
       responses:
         '200':
-          description: OK
+          description: Success Get order with items by Order ID
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResponseGetCreateOrder'
+        '400':
+          description: Failed Get order with items by Order ID
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
     put:
       tags: 
         - orders
+      description: Update order and items with order id
+      summary: Update order and items order id
+      parameters:
+        - required: true
+          name: orderID
+          in: path
+          description: Order ID
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestUpdateOrder'
       responses:
         '200':
-          description: OK
+          description: Success update order and items by order id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  payload:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ResponseGetCreateOrder'
+        '400':
+          description: Failed update order and items by order id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
     delete:
       tags: 
         - orders
+      description: Delete order and items by order id
+      summary: Delete order and items by order id
+      parameters:
+        - required: true
+          name: orderID
+          in: path
+          description: Order ID
+          schema:
+            type: integer
       responses:
         '200':
-          description: OK
+          description: Success delete order and items by order id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+        '400':
+          description: Failed update order and items by order id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseError'
