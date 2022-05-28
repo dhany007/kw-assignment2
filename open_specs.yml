@@ -90,7 +90,7 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/ResponseGetCreateOrder'
-        '400':
+        '404':
           description: Failed get all order with items
           content:
             application/json:

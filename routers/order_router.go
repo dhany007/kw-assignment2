@@ -16,10 +16,13 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	orderService := services.NewOrderService(db, orderRepository)
 	orderController := controllers.NewOrderController(orderService)
 
-	orders := router.Group("/orders")
+	orderRouter := router.Group("/orders")
 	{
-		orders.GET("/", orderController.GetAllOrders)
+		orderRouter.GET("/", orderController.GetAllOrders)
+		orderRouter.POST("/", orderController.CreateOrder)
 	}
+
+	router.Use(gin.Recovery())
 
 	return router
 }

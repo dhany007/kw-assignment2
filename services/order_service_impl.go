@@ -2,8 +2,9 @@ package services
 
 import (
 	"assignment2/models"
+	"assignment2/params"
 	"assignment2/repositories"
-	"fmt"
+	"errors"
 
 	"gorm.io/gorm"
 )
@@ -20,10 +21,34 @@ func NewOrderService(db *gorm.DB, orderRepository repositories.OrderRepository) 
 	}
 }
 
-func (service *OrderServiceImpl) GetAllOrdersItems() []models.Order {
+func (service *OrderServiceImpl) GetAllOrdersItems() ([]models.Order, error) {
 	orders, err := service.OrderRepository.GetAllOrders(service.DB)
 
-	fmt.Println("order", orders)
-	fmt.Println("err", err)
-	return orders
+	if err != nil {
+		return nil, errors.New("orders of items not found")
+	}
+
+	return orders, nil
+}
+
+func (service *OrderServiceImpl) CreateOrderItems(request params.RequestCreateOrder) (models.Order, error) {
+	items := []models.Item{}
+
+	for _, item := range request.Items {
+		tempItem := models.Item{
+			ItemCode:    item.ItemCode,
+			Quantity:    item.Quantity,
+			Description: item.Description,
+		}
+		items = append(items, tempItem)
+	}
+
+	order := models.Order{
+		CustomerName: request.CustomerName,
+		Items:        items,
+	}
+
+	response, _ := service.OrderRepository.CreateOrder(service.DB, order)
+
+	return response, nil
 }

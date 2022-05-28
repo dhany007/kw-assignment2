@@ -1,5 +1,12 @@
 package params
 
 type RequestCreateOrder struct {
-	CustomerName int `json:"customer_name"`
+	CustomerName string        `json:"customer_name"`
+	Items        []RequestItem `json:"items"`
+}
+
+type RequestItem struct {
+	ItemCode    string `json:"item_code"`
+	Description string `json:"description"`
+	Quantity    uint   `json:"quantity"`
 }

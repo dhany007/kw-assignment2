@@ -1,3 +1,21 @@
-// get all orders with item
+// get all orders with items
 GET http://localhost:3000/orders
+###
+
+// create order with items
+POST http://localhost:3000/orders
+Content-Type: "application/json"
+
+{
+  "customer_name": "Budi",
+  "items": [{
+      "item_code": "KW02",
+      "description": "ini adalah deskripsi product",
+      "quantity": 10
+    },{
+      "item_code": "KW03",
+      "description": "ini adalah deskripsi product",
+      "quantity": 20
+    }]
+}
 ###
