@@ -100,3 +100,23 @@ func (controller *OrderControllerImpl) GetOrderByOrderID(ctx *gin.Context) {
 		Payload: response,
 	})
 }
+
+func (controller *OrderControllerImpl) DeleteOrderByOrderID(ctx *gin.Context) {
+	orderID := ctx.Param("orderID")
+	id, err := strconv.Atoi(orderID)
+
+	if helper.PanicIfError(ctx, err) {
+		return
+	}
+
+	err = controller.OrderService.DeleteOrderByOrderID(id)
+
+	if helper.NotFoundError(ctx, err) {
+		return
+	}
+
+	ctx.JSON(http.StatusOK, models.ResponseJSON{
+		Code:   200,
+		Status: "OK",
+	})
+}

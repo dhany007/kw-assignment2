@@ -85,3 +85,20 @@ func (service *OrderServiceImpl) GetOrderByOrderID(id int) (models.Order, error)
 
 	return order, nil
 }
+
+func (service *OrderServiceImpl) DeleteOrderByOrderID(id int) error {
+
+	order, err := service.OrderRepository.GetOrderByOrderID(service.DB, id)
+
+	if err != nil {
+		return errors.New("orders of items not found")
+	}
+
+	err = service.OrderRepository.DeleteOrderByOrderID(service.DB, order)
+
+	if err != nil {
+		return errors.New(err.Error())
+	}
+
+	return nil
+}

@@ -2,7 +2,7 @@
 GET http://localhost:3000/orders
 ###
 
-// get all orders with items
+// get orders with items by order id
 GET http://localhost:3000/orders/10
 ###
 
@@ -42,4 +42,8 @@ Content-Type: "application/json"
       "quantity": 10
     }]
 }
+###
+
+// delete orders with items by order id
+DELETE  http://localhost:3000/orders/1
 ###

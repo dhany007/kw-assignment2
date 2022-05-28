@@ -7,4 +7,5 @@ type OrderController interface {
 	CreateOrder(ctx *gin.Context)
 	UpdateOrder(ctx *gin.Context)
 	GetOrderByOrderID(ctx *gin.Context)
+	DeleteOrderByOrderID(ctx *gin.Context)
 }

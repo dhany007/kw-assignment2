@@ -3,7 +3,6 @@ package repositories
 import (
 	"assignment2/models"
 	"errors"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -18,10 +17,7 @@ func NewOrderRepository() OrderRepository {
 func (repository *OrderRepositoryImpl) GetAllOrders(db *gorm.DB) ([]models.Order, error) {
 	orders := []models.Order{}
 
-	fmt.Println("kesini")
 	result := db.Preload("Items").Find(&orders)
-	// result := db.Model(models.Order{}).Joins("JOIN items on items.order_id = orders.order_id").Scan(&orders)
-	fmt.Println(result)
 	if result.RowsAffected == 0 {
 		return nil, errors.New("not found")
 	}
@@ -88,4 +84,18 @@ func (repository *OrderRepositoryImpl) GetOrderByOrderID(db *gorm.DB, id int) (m
 	}
 
 	return orders, nil
+}
+
+func (repository *OrderRepositoryImpl) DeleteOrderByOrderID(db *gorm.DB, request models.Order) error {
+	err := db.Delete(&request.Items).Error
+	if err != nil {
+		return errors.New(err.Error())
+	}
+
+	err = db.Delete(&request).Error
+	if err != nil {
+		return errors.New(err.Error())
+	}
+
+	return nil
 }

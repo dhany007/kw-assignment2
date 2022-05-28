@@ -10,4 +10,5 @@ type OrderService interface {
 	CreateOrderItems(request params.RequestCreateOrder) (models.Order, error)
 	UpdateOrderItems(request params.RequestCreateOrder, id int) (models.Order, error)
 	GetOrderByOrderID(id int) (models.Order, error)
+	DeleteOrderByOrderID(id int) error
 }

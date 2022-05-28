@@ -22,6 +22,7 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 		orderRouter.GET("/:orderID", orderController.GetOrderByOrderID)
 		orderRouter.POST("/", orderController.CreateOrder)
 		orderRouter.PUT("/:orderID", orderController.UpdateOrder)
+		orderRouter.DELETE("/:orderID", orderController.DeleteOrderByOrderID)
 	}
 
 	router.Use(gin.Recovery())
