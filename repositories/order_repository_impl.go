@@ -47,3 +47,45 @@ func (repository *OrderRepositoryImpl) CreateOrder(db *gorm.DB, request models.O
 
 	return orders, nil
 }
+
+func (repository *OrderRepositoryImpl) UpdateOrder(db *gorm.DB, request models.Order, id int) (models.Order, error) {
+	order := models.Order{
+		CustomerName: request.CustomerName,
+	}
+
+	err := db.Model(&order).Where("order_id = ?", id).Updates(order).Error
+
+	if err != nil {
+		return order, errors.New(err.Error())
+	}
+
+	newItems := []models.Item{}
+	for _, tempItem := range request.Items {
+		item := models.Item{
+			ItemCode:    tempItem.ItemCode,
+			Description: tempItem.Description,
+			Quantity:    tempItem.Quantity,
+		}
+
+		db.Model(&item).Where("order_id = ? and item_id = ?", id, tempItem.ItemID).Updates(item)
+
+		item.ItemID = tempItem.ItemID
+		newItems = append(newItems, item)
+	}
+
+	order.Items = newItems
+
+	return order, nil
+}
+
+func (repository *OrderRepositoryImpl) GetOrderByOrderID(db *gorm.DB, id int) (models.Order, error) {
+	orders := models.Order{}
+
+	result := db.Where("order_id = ?", id).Preload("Items").Find(&orders)
+
+	if result.RowsAffected == 0 {
+		return orders, errors.New("order not found")
+	}
+
+	return orders, nil
+}

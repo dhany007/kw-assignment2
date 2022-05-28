@@ -7,5 +7,7 @@ import (
 
 type OrderService interface {
 	GetAllOrdersItems() ([]models.Order, error)
-	CreateOrderItems(params.RequestCreateOrder) (models.Order, error)
+	CreateOrderItems(request params.RequestCreateOrder) (models.Order, error)
+	UpdateOrderItems(request params.RequestCreateOrder, id int) (models.Order, error)
+	GetOrderByOrderID(id int) (models.Order, error)
 }

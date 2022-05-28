@@ -19,7 +19,9 @@ func NewRouter(db *gorm.DB) *gin.Engine {
 	orderRouter := router.Group("/orders")
 	{
 		orderRouter.GET("/", orderController.GetAllOrders)
+		orderRouter.GET("/:orderID", orderController.GetOrderByOrderID)
 		orderRouter.POST("/", orderController.CreateOrder)
+		orderRouter.PUT("/:orderID", orderController.UpdateOrder)
 	}
 
 	router.Use(gin.Recovery())

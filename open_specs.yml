@@ -63,8 +63,6 @@ components:
       properties:
         code:
           type: number
-        status:
-          type: string
         error:
           type: string
 paths:

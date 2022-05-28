@@ -2,20 +2,44 @@
 GET http://localhost:3000/orders
 ###
 
+// get all orders with items
+GET http://localhost:3000/orders/10
+###
+
 // create order with items
 POST http://localhost:3000/orders
 Content-Type: "application/json"
 
 {
-  "customer_name": "Budi",
+  "customer_name": "Kalai",
   "items": [{
-      "item_code": "KW02",
+      "item_code": "KW04",
       "description": "ini adalah deskripsi product",
       "quantity": 10
     },{
-      "item_code": "KW03",
+      "item_code": "KW05",
       "description": "ini adalah deskripsi product",
       "quantity": 20
+    }]
+}
+###
+
+// order order with items by order id
+PUT http://localhost:3000/orders/2
+Content-Type: "application/json"
+
+{
+  "customer_name": "budi-update-2",
+  "items": [{
+      "item_id": 2,
+      "item_code": "KW02-update-2",
+      "description": "ini adalah deskripsi product-update",
+      "quantity": 10
+    },{
+      "item_id": 3,
+      "item_code": "KW03-update-2",
+      "description": "ini adalah deskripsi product-update",
+      "quantity": 10
     }]
 }
 ###

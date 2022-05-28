@@ -6,6 +6,7 @@ type RequestCreateOrder struct {
 }
 
 type RequestItem struct {
+	ItemID      uint   `json:"item_id,omitempty"`
 	ItemCode    string `json:"item_code"`
 	Description string `json:"description"`
 	Quantity    uint   `json:"quantity"`

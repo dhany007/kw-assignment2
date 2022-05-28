@@ -52,3 +52,36 @@ func (service *OrderServiceImpl) CreateOrderItems(request params.RequestCreateOr
 
 	return response, nil
 }
+
+func (service *OrderServiceImpl) UpdateOrderItems(request params.RequestCreateOrder, id int) (models.Order, error) {
+	items := []models.Item{}
+
+	for _, item := range request.Items {
+		tempItem := models.Item{
+			ItemID:      item.ItemID,
+			ItemCode:    item.ItemCode,
+			Quantity:    item.Quantity,
+			Description: item.Description,
+		}
+		items = append(items, tempItem)
+	}
+
+	order := models.Order{
+		CustomerName: request.CustomerName,
+		Items:        items,
+	}
+
+	response, _ := service.OrderRepository.UpdateOrder(service.DB, order, id)
+
+	return response, nil
+}
+
+func (service *OrderServiceImpl) GetOrderByOrderID(id int) (models.Order, error) {
+	order, err := service.OrderRepository.GetOrderByOrderID(service.DB, id)
+
+	if err != nil {
+		return order, errors.New("orders of items not found")
+	}
+
+	return order, nil
+}

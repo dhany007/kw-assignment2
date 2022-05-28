@@ -7,23 +7,45 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ReadFromRequestBody(ctx *gin.Context, result interface{}) {
+func ReadFromRequestBody(ctx *gin.Context, result interface{}) bool {
 	err := ctx.ShouldBindJSON(result)
+	errRequest := false
+
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, models.ResponseJSON{
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, models.ResponseJSON{
 			Code:  http.StatusBadRequest,
 			Error: err.Error(),
 		})
-		return
+		errRequest = true
 	}
+
+	return errRequest
 }
 
-func PanicIfError(ctx *gin.Context, err error) {
+func PanicIfError(ctx *gin.Context, err error) bool {
+	result := false
+
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, models.ResponseJSON{
+		ctx.AbortWithStatusJSON(http.StatusBadRequest, models.ResponseJSON{
 			Code:  http.StatusBadRequest,
 			Error: err.Error(),
 		})
-		return
+		result = true
 	}
+
+	return result
+}
+
+func NotFoundError(ctx *gin.Context, err error) bool {
+	result := false
+
+	if err != nil {
+		ctx.AbortWithStatusJSON(http.StatusNotFound, models.ResponseJSON{
+			Code:  http.StatusNotFound,
+			Error: err.Error(),
+		})
+		result = true
+	}
+
+	return result
 }
