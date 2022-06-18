@@ -14,7 +14,7 @@ func NewOrderRepository() OrderRepository {
 	return &OrderRepositoryImpl{}
 }
 
-func (repository *OrderRepositoryImpl) GetAllOrders(db *gorm.DB) ([]models.Order, error) {
+func (r *OrderRepositoryImpl) GetAllOrders(db *gorm.DB) ([]models.Order, error) {
 	orders := []models.Order{}
 
 	result := db.Preload("Items").Find(&orders)
@@ -25,7 +25,7 @@ func (repository *OrderRepositoryImpl) GetAllOrders(db *gorm.DB) ([]models.Order
 	return orders, nil
 }
 
-func (repository *OrderRepositoryImpl) CreateOrder(db *gorm.DB, request models.Order) (models.Order, error) {
+func (r *OrderRepositoryImpl) CreateOrder(db *gorm.DB, request models.Order) (models.Order, error) {
 	orders := request
 	items := request.Items
 
@@ -44,7 +44,7 @@ func (repository *OrderRepositoryImpl) CreateOrder(db *gorm.DB, request models.O
 	return orders, nil
 }
 
-func (repository *OrderRepositoryImpl) UpdateOrder(db *gorm.DB, request models.Order, id int) (models.Order, error) {
+func (r *OrderRepositoryImpl) UpdateOrder(db *gorm.DB, request models.Order, id int) (models.Order, error) {
 	order := models.Order{
 		CustomerName: request.CustomerName,
 	}
@@ -74,7 +74,7 @@ func (repository *OrderRepositoryImpl) UpdateOrder(db *gorm.DB, request models.O
 	return order, nil
 }
 
-func (repository *OrderRepositoryImpl) GetOrderByOrderID(db *gorm.DB, id int) (models.Order, error) {
+func (r *OrderRepositoryImpl) GetOrderByOrderID(db *gorm.DB, id int) (models.Order, error) {
 	orders := models.Order{}
 
 	result := db.Where("order_id = ?", id).Preload("Items").Find(&orders)
@@ -86,7 +86,7 @@ func (repository *OrderRepositoryImpl) GetOrderByOrderID(db *gorm.DB, id int) (m
 	return orders, nil
 }
 
-func (repository *OrderRepositoryImpl) DeleteOrderByOrderID(db *gorm.DB, request models.Order) error {
+func (r *OrderRepositoryImpl) DeleteOrderByOrderID(db *gorm.DB, request models.Order) error {
 	err := db.Delete(&request.Items).Error
 	if err != nil {
 		return errors.New(err.Error())

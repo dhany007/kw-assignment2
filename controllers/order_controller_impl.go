@@ -21,8 +21,8 @@ func NewOrderController(orderService services.OrderService) OrderController {
 	}
 }
 
-func (controller *OrderControllerImpl) GetAllOrders(ctx *gin.Context) {
-	orders, err := controller.OrderService.GetAllOrdersItems()
+func (c *OrderControllerImpl) GetAllOrders(ctx *gin.Context) {
+	orders, err := c.OrderService.GetAllOrdersItems()
 
 	if helper.NotFoundError(ctx, err) {
 		return
@@ -35,11 +35,11 @@ func (controller *OrderControllerImpl) GetAllOrders(ctx *gin.Context) {
 	})
 }
 
-func (controller *OrderControllerImpl) CreateOrder(ctx *gin.Context) {
+func (c *OrderControllerImpl) CreateOrder(ctx *gin.Context) {
 	requestOrder := params.RequestCreateOrder{}
 	helper.ReadFromRequestBody(ctx, &requestOrder)
 
-	response, err := controller.OrderService.CreateOrderItems(requestOrder)
+	response, err := c.OrderService.CreateOrderItems(requestOrder)
 
 	if helper.PanicIfError(ctx, err) {
 		return
@@ -52,7 +52,7 @@ func (controller *OrderControllerImpl) CreateOrder(ctx *gin.Context) {
 	})
 }
 
-func (controller *OrderControllerImpl) UpdateOrder(ctx *gin.Context) {
+func (c *OrderControllerImpl) UpdateOrder(ctx *gin.Context) {
 	requestOrder := params.RequestCreateOrder{}
 	helper.ReadFromRequestBody(ctx, &requestOrder)
 
@@ -62,12 +62,12 @@ func (controller *OrderControllerImpl) UpdateOrder(ctx *gin.Context) {
 		return
 	}
 
-	_, err = controller.OrderService.GetOrderByOrderID(id)
+	_, err = c.OrderService.GetOrderByOrderID(id)
 	if helper.NotFoundError(ctx, err) {
 		return
 	}
 
-	response, err := controller.OrderService.UpdateOrderItems(requestOrder, id)
+	response, err := c.OrderService.UpdateOrderItems(requestOrder, id)
 
 	if helper.PanicIfError(ctx, err) {
 		return
@@ -80,7 +80,7 @@ func (controller *OrderControllerImpl) UpdateOrder(ctx *gin.Context) {
 	})
 }
 
-func (controller *OrderControllerImpl) GetOrderByOrderID(ctx *gin.Context) {
+func (c *OrderControllerImpl) GetOrderByOrderID(ctx *gin.Context) {
 	orderID := ctx.Param("orderID")
 	id, err := strconv.Atoi(orderID)
 
@@ -88,7 +88,7 @@ func (controller *OrderControllerImpl) GetOrderByOrderID(ctx *gin.Context) {
 		return
 	}
 
-	response, err := controller.OrderService.GetOrderByOrderID(id)
+	response, err := c.OrderService.GetOrderByOrderID(id)
 
 	if helper.NotFoundError(ctx, err) {
 		return
@@ -101,7 +101,7 @@ func (controller *OrderControllerImpl) GetOrderByOrderID(ctx *gin.Context) {
 	})
 }
 
-func (controller *OrderControllerImpl) DeleteOrderByOrderID(ctx *gin.Context) {
+func (c *OrderControllerImpl) DeleteOrderByOrderID(ctx *gin.Context) {
 	orderID := ctx.Param("orderID")
 	id, err := strconv.Atoi(orderID)
 
@@ -109,7 +109,7 @@ func (controller *OrderControllerImpl) DeleteOrderByOrderID(ctx *gin.Context) {
 		return
 	}
 
-	err = controller.OrderService.DeleteOrderByOrderID(id)
+	err = c.OrderService.DeleteOrderByOrderID(id)
 
 	if helper.NotFoundError(ctx, err) {
 		return
